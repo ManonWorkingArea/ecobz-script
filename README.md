@@ -21,28 +21,16 @@ graph LR
 
 ## วิธีติดตั้ง
 
-### วิธีที่ 1: ติดตั้งจาก source (แนะนำ)
-
 ```bash
 git clone https://github.com/ManonWorkingArea/ecobz-script.git
 cd ecobz-script
 sudo make install
 ```
 
-### วิธีที่ 2: curl | bash
+หรือ
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ManonWorkingArea/ecobz-script/main/install.sh | sudo bash
-```
-
-### วิธีที่ 3: .deb package
-
-```bash
-# Build .deb
-make deb
-
-# Install
-sudo dpkg -i ecobz_1.0.0_all.deb
+sudo ./install.sh
 ```
 
 ## วิธีใช้งาน
@@ -100,39 +88,6 @@ sudo ecobz server-config \
 8. **Swap** — สร้าง swap file ถ้ายังไม่มี
 9. **Locale** — ตั้ง `en_US.UTF-8`
 10. **Sysctl** — ปรับค่า kernel ให้เหมาะกับ server
-
-## ขึ้น Ubuntu Repository (PPA)
-
-ถ้าต้องการให้ติดตั้งผ่าน `apt install ecobz` โดยตรง:
-
-### วิธีที่ 1: Launchpad PPA (ฟรี)
-
-```bash
-# 1. สร้าง PPA ที่ https://launchpad.net/
-# 2. สร้าง source package และอัปโหลด
-debuild -S -sa
-dput ppa:manonsanoi-h/ecobz ecobz_1.0.0_source.changes
-
-# 3. ผู้ใช้ติดตั้งด้วย
-sudo add-apt-repository ppa:manonsanoi-h/ecobz
-sudo apt update
-sudo apt install ecobz
-```
-
-### วิธีที่ 2: Self-hosted APT repo
-
-```bash
-# บนเซิร์ฟเวอร์ของคุณ
-mkdir -p /var/www/repo/ubuntu
-cp ecobz_1.0.0_all.deb /var/www/repo/ubuntu/
-cd /var/www/repo/ubuntu
-dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
-
-# ผู้ใช้เพิ่ม repo
-echo "deb [trusted=yes] https://repo.yourdomain.com/ubuntu ./" | sudo tee /etc/apt/sources.list.d/ecobz.list
-sudo apt update
-sudo apt install ecobz
-```
 
 ## Requirements
 
