@@ -224,6 +224,100 @@ create_swap() {
 }
 
 # -----------------------------------------------------------------------------
+# Install custom MOTD (Welcome screen showing specs + monitoring guide)
+# -----------------------------------------------------------------------------
+install_motd() {
+    log_step "Installing custom welcome screen (MOTD)..."
+
+    cat > /etc/update-motd.d/99-ecobz-welcome <<'MOTDEOF'
+#!/bin/bash
+# =============================================================================
+# ecobz Welcome Screen — Server specs & Monitoring guide
+# =============================================================================
+
+# Colours
+R='\033[0;31m'
+G='\033[0;32m'
+Y='\033[1;33m'
+B='\033[0;34m'
+C='\033[0;36m'
+W='\033[1;37m'
+N='\033[0m'
+
+# ── System Specs ────────────────────────────────────────────────────────────
+echo -e "${C}┌──────────────────────────────────────────────────────┐${N}"
+echo -e "${C}│${W}  SYSTEM INFORMATION${C}                                  │${N}"
+echo -e "${C}├──────────────────────────────────────────────────────┤${N}"
+
+# Hostname & OS
+printf "${C}│${N}  ${W}Hostname${N}    : ${G}%s${N}\n" "$(hostname)"
+printf "${C}│${N}  ${W}OS${N}          : ${G}%s${N}\n" "$(lsb_release -ds 2>/dev/null || cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)"
+printf "${C}│${N}  ${W}Kernel${N}      : ${G}%s${N}\n" "$(uname -r)"
+printf "${C}│${N}  ${W}Uptime${N}      : ${G}%s${N}\n" "$(uptime -p | sed 's/up //')"
+
+# CPU
+cpu_model=$(lscpu 2>/dev/null | grep 'Model name' | head -1 | sed 's/Model name:\s*//')
+cpu_cores=$(nproc)
+printf "${C}│${N}  ${W}CPU${N}         : ${G}%s (%s cores)${N}\n" "$cpu_model" "$cpu_cores"
+
+# RAM
+mem_total=$(free -h | awk '/^Mem:/{print $2}')
+mem_used=$(free -h | awk '/^Mem:/{print $3}')
+mem_percent=$(free | awk '/^Mem:/{printf "%.0f", $3/$2*100}')
+printf "${C}│${N}  ${W}RAM${N}         : ${G}%s / %s (%s%%)${N}\n" "$mem_used" "$mem_total" "$mem_percent"
+
+# Disk
+disk_info=$(df -h / | awk 'NR==2{print $3" / "$2" ("$5")"}')
+printf "${C}│${N}  ${W}Disk (/)${N}    : ${G}%s${N}\n" "$disk_info"
+
+# Swap
+swap_total=$(free -h | awk '/^Swap:/{print $2}')
+swap_used=$(free -h | awk '/^Swap:/{print $3}')
+printf "${C}│${N}  ${W}Swap${N}        : ${G}%s / %s${N}\n" "${swap_used:-0}" "${swap_total:-0}"
+
+# IP Addresses
+echo -e "${C}├──────────────────────────────────────────────────────┤${N}"
+printf "${C}│${N}  ${W}IP Addresses${N}:${N}\n"
+ip -4 addr show scope global | grep inet | while read -r line; do
+    iface=$(echo "$line" | awk '{print $NF}')
+    ipaddr=$(echo "$line" | awk '{print $2}')
+    printf "${C}│${N}    ${C}%-10s${N} ${G}%s${N}\n" "$iface" "$ipaddr"
+done
+
+# Load
+load=$(uptime | awk -F'load average:' '{print $2}' | xargs)
+printf "${C}│${N}  ${W}Load Avg${N}    : ${G}%s${N}\n" "$load"
+
+echo -e "${C}└──────────────────────────────────────────────────────┘${N}"
+echo ""
+
+# ── Monitoring Quick Guide ──────────────────────────────────────────────────
+echo -e "${C}┌──────────────────────────────────────────────────────┐${N}"
+echo -e "${C}│${W}  MONITORING QUICK GUIDE${C}                              │${N}"
+echo -e "${C}├──────────────────────────────────────────────────────┤${N}"
+echo -e "${C}│${N}  ${G}glances${N}     ภาพรวมทั้งหมด (CPU,RAM,Disk,Net)   ${C}│${N}"
+echo -e "${C}│${N}  ${G}htop${N}        ดู process + CPU/RAM แบบ interact  ${C}│${N}"
+echo -e "${C}│${N}  ${G}iotop${N}       process ที่กิน disk I/O มากสุด       ${C}│${N}"
+echo -e "${C}│${N}  ${G}iftop${N}       ดู network traffic แบบ real-time    ${C}│${N}"
+echo -e "${C}│${N}  ${G}sensors${N}     วัดอุณหภูมิ CPU + ความเร็วพัดลม     ${C}│${N}"
+echo -e "${C}│${N}  ${G}iostat -x 1${N} disk I/O stats รายวินาที            ${C}│${N}"
+echo -e "${C}│${N}  ${G}ncdu /${N}       ดูว่า folder ไหนกินเนื้อที่มากสุด  ${C}│${N}"
+echo -e "${C}│${N}  ${G}df -h${N}       เช็คพื้นที่ disk ทั้งหมด             ${C}│${N}"
+echo -e "${C}│${N}  ${G}free -h${N}     เช็ค RAM + Swap                     ${C}│${N}"
+echo -e "${C}└──────────────────────────────────────────────────────┘${N}"
+MOTDEOF
+
+    chmod 755 /etc/update-motd.d/99-ecobz-welcome
+
+    # Disable default boring MOTD parts (keep our custom one only)
+    chmod -x /etc/update-motd.d/10-help-text 2>/dev/null || true
+    chmod -x /etc/update-motd.d/50-motd-news 2>/dev/null || true
+    chmod -x /etc/update-motd.d/50-landscape-sysinfo 2>/dev/null || true
+
+    log_info "Custom welcome screen installed."
+}
+
+# -----------------------------------------------------------------------------
 # Banner
 # -----------------------------------------------------------------------------
 print_banner() {
