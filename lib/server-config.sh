@@ -88,7 +88,7 @@ cmd_server_config() {
     # Step 4: Install essential packages
     # -------------------------------------------------------------------------
     local essential_pkgs=(
-        curl wget git vim htop net-tools
+        curl wget git vim nano htop net-tools
         ca-certificates gnupg lsb-release
         software-properties-common
         dnsutils  # dig, nslookup
@@ -100,6 +100,9 @@ cmd_server_config() {
         bash-completion
         unzip zip
         jq        # JSON parser
+        glances   # all-in-one system monitor
+        sysstat   # sar, iostat, mpstat (historical stats)
+        lm-sensors # CPU temp, fan speed
     )
 
     if [[ -n "$extra_pkgs" ]]; then
