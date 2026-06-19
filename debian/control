@@ -5,7 +5,7 @@ Priority: optional
 Architecture: all
 Essential: no
 Depends: bash (>= 4.0), apt, systemd
-Maintainer: Ecobz <dev@ecobz.io>
+Maintainer: Manon Sanoi <manonsanoi@gmail.com>
 Description: Ubuntu Server Auto-Configuration CLI
 ecobz is a command-line tool for quick and recommended
 configuration of Ubuntu servers. It handles:

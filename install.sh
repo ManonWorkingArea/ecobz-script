@@ -4,7 +4,7 @@
 # =============================================================================
 set -euo pipefail
 
-REPO_URL="https://raw.githubusercontent.com/ecobz/ecobz-script/main"
+REPO_URL="https://raw.githubusercontent.com/ManonWorkingArea/ecobz-script/main"
 VERSION="${ECOBZ_VERSION:-1.0.0}"
 
 # Colours

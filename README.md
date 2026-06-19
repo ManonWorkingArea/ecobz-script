@@ -24,7 +24,7 @@ graph LR
 ### วิธีที่ 1: ติดตั้งจาก source (แนะนำ)
 
 ```bash
-git clone https://github.com/ecobz/ecobz-script.git
+git clone https://github.com/ManonWorkingArea/ecobz-script.git
 cd ecobz-script
 sudo make install
 ```
@@ -32,7 +32,7 @@ sudo make install
 ### วิธีที่ 2: curl | bash
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ecobz/ecobz-script/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/ManonWorkingArea/ecobz-script/main/install.sh | sudo bash
 ```
 
 ### วิธีที่ 3: .deb package
@@ -111,10 +111,10 @@ sudo ecobz server-config \
 # 1. สร้าง PPA ที่ https://launchpad.net/
 # 2. สร้าง source package และอัปโหลด
 debuild -S -sa
-dput ppa:yourusername/ecobz ecobz_1.0.0_source.changes
+dput ppa:manonsanoi-h/ecobz ecobz_1.0.0_source.changes
 
 # 3. ผู้ใช้ติดตั้งด้วย
-sudo add-apt-repository ppa:yourusername/ecobz
+sudo add-apt-repository ppa:manonsanoi-h/ecobz
 sudo apt update
 sudo apt install ecobz
 ```
