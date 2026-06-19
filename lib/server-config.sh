@@ -66,14 +66,11 @@ cmd_server_config() {
     # -------------------------------------------------------------------------
     # Step 2: Set hostname
     # -------------------------------------------------------------------------
-    if [[ -z "$hostname" ]] && $interactive; then
-        read -r -p "Enter hostname: " hostname
+    if [[ -z "$hostname" ]]; then
+        read -r -p "Enter hostname [$(hostnamectl --static)]: " hostname
+        hostname="${hostname:-$(hostnamectl --static)}"
     fi
-    if [[ -n "$hostname" ]]; then
-        set_hostname "$hostname"
-    else
-        log_info "Skipping hostname (not specified). Current: $(hostnamectl --static)"
-    fi
+    set_hostname "$hostname"
 
     # -------------------------------------------------------------------------
     # Step 3: Set timezone
