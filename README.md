@@ -77,16 +77,16 @@ sudo ecobz server-config \
 
 ## ตัวเลือกทั้งหมด
 
-| Option | คำอธิบาย |
-|---|---|
-| `--interactive, -i` | ถามก่อนทำแต่ละขั้นตอน |
-| `--hostname <name>` | ตั้งชื่อ server |
-| `--timezone <tz>` | ตั้ง timezone (default: `Asia/Bangkok`) |
-| `--no-firewall` | ข้ามการตั้งค่า UFW |
-| `--no-auto-updates` | ข้าม unattended-upgrades |
-| `--no-swap` | ข้ามการสร้าง swap |
-| `--swap-size <mb>` | กำหนดขนาด swap (default: 2048MB) |
-| `--extra-pkgs <list>` | ติดตั้ง package เพิ่มเติม (คั่นด้วย ,) |
+| Option                | คำอธิบาย                                |
+| --------------------- | --------------------------------------- |
+| `--interactive, -i`   | ถามก่อนทำแต่ละขั้นตอน                   |
+| `--hostname <name>`   | ตั้งชื่อ server                         |
+| `--timezone <tz>`     | ตั้ง timezone (default: `Asia/Bangkok`) |
+| `--no-firewall`       | ข้ามการตั้งค่า UFW                      |
+| `--no-auto-updates`   | ข้าม unattended-upgrades                |
+| `--no-swap`           | ข้ามการสร้าง swap                       |
+| `--swap-size <mb>`    | กำหนดขนาด swap (default: 2048MB)        |
+| `--extra-pkgs <list>` | ติดตั้ง package เพิ่มเติม (คั่นด้วย ,)  |
 
 ## สิ่งที่ ecobz จัดการให้
 

@@ -7,16 +7,17 @@ Essential: no
 Depends: bash (>= 4.0), apt, systemd
 Maintainer: Ecobz <dev@ecobz.io>
 Description: Ubuntu Server Auto-Configuration CLI
- ecobz is a command-line tool for quick and recommended
- configuration of Ubuntu servers. It handles:
-  - System update & upgrade
-  - Hostname & timezone configuration
-  - Essential package installation
-  - Automatic security updates (unattended-upgrades)
-  - UFW firewall configuration
-  - NTP time synchronization
-  - Swap file creation
-  - Sysctl kernel optimisation
+ecobz is a command-line tool for quick and recommended
+configuration of Ubuntu servers. It handles:
+
+- System update & upgrade
+- Hostname & timezone configuration
+- Essential package installation
+- Automatic security updates (unattended-upgrades)
+- UFW firewall configuration
+- NTP time synchronization
+- Swap file creation
+- Sysctl kernel optimisation
   .
- Run `sudo ecobz server-config` after installation to
- auto-configure your server with one command.
+  Run `sudo ecobz server-config` after installation to
+  auto-configure your server with one command.
