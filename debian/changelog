@@ -1,0 +1,8 @@
+ecobz (1.0.0-1) focal; urgency=medium
+
+  * Initial release.
+  * Auto-configure Ubuntu server with one command.
+  * Features: update/upgrade, hostname, timezone, essential packages,
+    automatic security updates, UFW firewall, NTP sync, swap, sysctl.
+
+ -- Manon Sanoi <manonsanoi@gmail.com>  Thu, 19 Jun 2026 12:00:00 +0700

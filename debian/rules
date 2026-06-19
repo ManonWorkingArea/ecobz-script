@@ -1,0 +1,15 @@
+#!/usr/bin/make -f
+# =============================================================================
+# debian/rules - Build script for ecobz (Architecture: all, no compile)
+# =============================================================================
+
+%:
+	dh $@
+
+# Override to skip build (pure shell script, nothing to compile)
+override_dh_auto_build:
+	@echo "No build needed — ecobz is pure shell script."
+
+# Skip dh_auto_test
+override_dh_auto_test:
+	@echo "No tests defined."

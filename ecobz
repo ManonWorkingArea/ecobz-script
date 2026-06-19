@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# =============================================================================
+# ecobz - Ubuntu Server Management CLI
+# =============================================================================
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERSION="1.0.0"
+SCRIPT_NAME="ecobz"
+
+# Try multiple locations for library directory
+#   dev:      ./lib/
+#   .deb:     /usr/lib/ecobz/
+#   make install: /usr/local/lib/ecobz/
+_find_lib_dir() {
+    local candidates=(
+        "${SCRIPT_DIR}/lib"
+        "${SCRIPT_DIR}/../lib/ecobz"
+        "/usr/lib/ecobz"
+        "/usr/local/lib/ecobz"
+    )
+    for dir in "${candidates[@]}"; do
+        if [[ -f "${dir}/common.sh" ]]; then
+            echo "$dir"
+            return 0
+        fi
+    done
+    echo "ERROR: Cannot find ecobz library directory." >&2
+    return 1
+}
+
+LIB_DIR="$(_find_lib_dir)" || { echo "$LIB_DIR" >&2; exit 1; }
+
+# -----------------------------------------------------------------------------
+# Source libraries
+# -----------------------------------------------------------------------------
+source "${LIB_DIR}/common.sh"
+source "${LIB_DIR}/help.sh"
+
+# -----------------------------------------------------------------------------
+# Main entry point
+# -----------------------------------------------------------------------------
+main() {
+    # Require root for most operations
+    if [[ $EUID -ne 0 ]]; then
+        log_error "This script must be run as root (use sudo)."
+        exit 1
+    fi
+
+    local cmd="${1:-}"
+
+    case "$cmd" in
+        server-config)
+            shift
+            source "${LIB_DIR}/server-config.sh"
+            cmd_server_config "$@"
+            ;;
+        --version|-v)
+            echo "ecobz version ${VERSION}"
+            ;;
+        --help|-h|"")
+            show_main_help
+            ;;
+        *)
+            log_error "Unknown command: ${cmd}"
+            show_main_help
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
