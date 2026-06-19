@@ -53,6 +53,12 @@ sudo ecobz server-config --hostname web01 --timezone Asia/Bangkok
 sudo ecobz server-config --interactive
 ```
 
+### minimal mode (ลงแค่ security essentials)
+
+```bash
+sudo ecobz server-config --minimal
+```
+
 ### ปรับแต่งเพิ่มเติม
 
 ```bash
@@ -68,6 +74,7 @@ sudo ecobz server-config \
 | Option                | คำอธิบาย                                |
 | --------------------- | --------------------------------------- |
 | `--interactive, -i`   | ถามก่อนทำแต่ละขั้นตอน                   |
+| `--minimal`           | ลงแค่ security พื้นฐาน ข้าม monitoring tools |
 | `--hostname <name>`   | ตั้งชื่อ server                         |
 | `--timezone <tz>`     | ตั้ง timezone (default: `Asia/Bangkok`) |
 | `--no-firewall`       | ข้ามการตั้งค่า UFW                      |
@@ -88,6 +95,17 @@ sudo ecobz server-config \
 8. **Swap** — สร้าง swap file ถ้ายังไม่มี
 9. **Locale** — ตั้ง `en_US.UTF-8`
 10. **Sysctl** — ปรับค่า kernel ให้เหมาะกับ server
+11. **MOTD Welcome** — หน้า login แสดง spec + คู่มือ monitor
+12. **Logrotate** — หมุน log ป้องกัน disk เต็ม
+
+## --minimal mode
+
+`--minimal` จะข้าม monitoring tools (glances, sysstat, htop, iotop, iftop, ncdu, mtr, lm-sensors) 
+เหลือแค่ security essentials + tools พื้นฐาน
+
+```bash
+sudo ecobz server-config --minimal
+```
 
 ## Requirements
 

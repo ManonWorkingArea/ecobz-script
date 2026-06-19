@@ -318,6 +318,70 @@ MOTDEOF
 }
 
 # -----------------------------------------------------------------------------
+# Configure logrotate for key system logs (prevent disk full)
+# -----------------------------------------------------------------------------
+configure_logrotate() {
+    log_step "Configuring logrotate..."
+
+    install_packages logrotate
+
+    cat > /etc/logrotate.d/ecobz-system <<'LREOF'
+# ecobz — system logs rotation (prevents disk full)
+/var/log/syslog
+/var/log/messages
+/var/log/kern.log
+/var/log/auth.log
+/var/log/user.log
+/var/log/debug
+/var/log/daemon.log
+{
+    rotate 7
+    daily
+    missingok
+    notifempty
+    compress
+    delaycompress
+    postrotate
+        systemctl kill -s HUP rsyslog.service 2>/dev/null || true
+    endscript
+}
+
+/var/log/btmp
+/var/log/wtmp
+{
+    rotate 4
+    monthly
+    missingok
+    notifempty
+    compress
+    create 0600 root utmp
+}
+
+/var/log/unattended-upgrades/unattended-upgrades.log
+{
+    rotate 4
+    monthly
+    missingok
+    notifempty
+    compress
+}
+
+/var/log/dpkg.log
+/var/log/apt/history.log
+/var/log/apt/term.log
+{
+    rotate 4
+    monthly
+    missingok
+    notifempty
+    compress
+}
+LREOF
+
+    log_info "Logrotate configured (7 daily rotates for system logs, 4 monthly for others)."
+}
+
+# -----------------------------------------------------------------------------
 # Banner
 # -----------------------------------------------------------------------------
 print_banner() {

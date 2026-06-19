@@ -5,6 +5,7 @@
 
 cmd_server_config() {
     local interactive=false
+    local minimal=false
     local hostname=""
     local timezone="Asia/Bangkok"
     local do_firewall=true
@@ -20,6 +21,8 @@ cmd_server_config() {
         case "$1" in
             --interactive|-i)
                 interactive=true; shift ;;
+            --minimal)
+                minimal=true; shift ;;
             --hostname)
                 hostname="$2"; shift 2 ;;
             --timezone)
@@ -84,30 +87,46 @@ cmd_server_config() {
     # -------------------------------------------------------------------------
     # Step 4: Install essential packages
     # -------------------------------------------------------------------------
-    local essential_pkgs=(
-        curl wget git vim nano htop net-tools
+    # Base packages — always installed (security + essentials)
+    local base_pkgs=(
+        curl wget git vim nano
         ca-certificates gnupg lsb-release
         software-properties-common
-        dnsutils  # dig, nslookup
-        mtr       # network diagnostics
-        iotop     # disk I/O monitor
-        ncdu      # disk usage
-        iftop     # network monitor
-        lsof      # list open files
+        net-tools
+        lsof
         bash-completion
         unzip zip
-        jq        # JSON parser
-        glances   # all-in-one system monitor
-        sysstat   # sar, iostat, mpstat (historical stats)
-        lm-sensors # CPU temp, fan speed
+        jq
     )
+
+    # Monitoring tools — skipped in --minimal mode
+    local monitor_pkgs=(
+        htop
+        dnsutils
+        mtr
+        iotop
+        ncdu
+        iftop
+        glances
+        sysstat
+        lm-sensors
+    )
+
+    local pkgs_to_install=("${base_pkgs[@]}")
+
+    if ! $minimal; then
+        pkgs_to_install+=("${monitor_pkgs[@]}")
+        log_info "Full mode: installing monitoring tools."
+    else
+        log_info "Minimal mode: skipping monitoring tools."
+    fi
 
     if [[ -n "$extra_pkgs" ]]; then
         IFS=',' read -ra extra_arr <<< "$extra_pkgs"
-        essential_pkgs+=("${extra_arr[@]}")
+        pkgs_to_install+=("${extra_arr[@]}")
     fi
 
-    install_packages "${essential_pkgs[@]}"
+    install_packages "${pkgs_to_install[@]}"
 
     # -------------------------------------------------------------------------
     # Step 5: Configure automatic security updates
@@ -167,6 +186,11 @@ EOF
     # Step 11: Install custom welcome screen (MOTD)
     # -------------------------------------------------------------------------
     install_motd
+
+    # -------------------------------------------------------------------------
+    # Step 12: Configure logrotate
+    # -------------------------------------------------------------------------
+    configure_logrotate
 
     # -------------------------------------------------------------------------
     # Done

@@ -34,6 +34,7 @@ ${C_BOLD}USAGE:${C_NC}
 
 ${C_BOLD}OPTIONS:${C_NC}
     --interactive, -i       Interactive mode — prompts for each setting
+    --minimal               Security essentials only (skip monitoring tools)
     --hostname <name>       Set server hostname
     --timezone <tz>         Set timezone (default: Asia/Bangkok)
     --no-firewall           Skip UFW firewall configuration
@@ -47,12 +48,16 @@ ${C_BOLD}WHAT IT DOES:${C_NC}
     1. apt update & upgrade
     2. Set hostname
     3. Set timezone
-    4. Install essential packages (curl, wget, git, vim, htop, net-tools, etc.)
+    4. Install essential packages
+       (--minimal: security basics only; default: + monitoring tools)
     5. Configure automatic security updates (unattended-upgrades)
     6. Configure UFW firewall (allow SSH, default deny)
     7. Enable NTP time sync
     8. Create swap file (if no swap exists)
     9. Configure locale (en_US.UTF-8)
+   10. Optimise sysctl settings
+   11. Install custom welcome screen (MOTD)
+   12. Configure logrotate
 
 ${C_BOLD}EXAMPLES:${C_NC}
     sudo ecobz server-config
