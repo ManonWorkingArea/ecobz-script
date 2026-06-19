@@ -71,17 +71,17 @@ sudo ecobz server-config \
 
 ## ตัวเลือกทั้งหมด
 
-| Option                | คำอธิบาย                                |
-| --------------------- | --------------------------------------- |
-| `--interactive, -i`   | ถามก่อนทำแต่ละขั้นตอน                   |
+| Option                | คำอธิบาย                                     |
+| --------------------- | -------------------------------------------- |
+| `--interactive, -i`   | ถามก่อนทำแต่ละขั้นตอน                        |
 | `--minimal`           | ลงแค่ security พื้นฐาน ข้าม monitoring tools |
-| `--hostname <name>`   | ตั้งชื่อ server                         |
-| `--timezone <tz>`     | ตั้ง timezone (default: `Asia/Bangkok`) |
-| `--no-firewall`       | ข้ามการตั้งค่า UFW                      |
-| `--no-auto-updates`   | ข้าม unattended-upgrades                |
-| `--no-swap`           | ข้ามการสร้าง swap                       |
-| `--swap-size <mb>`    | กำหนดขนาด swap (default: 2048MB)        |
-| `--extra-pkgs <list>` | ติดตั้ง package เพิ่มเติม (คั่นด้วย ,)  |
+| `--hostname <name>`   | ตั้งชื่อ server                              |
+| `--timezone <tz>`     | ตั้ง timezone (default: `Asia/Bangkok`)      |
+| `--no-firewall`       | ข้ามการตั้งค่า UFW                           |
+| `--no-auto-updates`   | ข้าม unattended-upgrades                     |
+| `--no-swap`           | ข้ามการสร้าง swap                            |
+| `--swap-size <mb>`    | กำหนดขนาด swap (default: 2048MB)             |
+| `--extra-pkgs <list>` | ติดตั้ง package เพิ่มเติม (คั่นด้วย ,)       |
 
 ## สิ่งที่ ecobz จัดการให้
 
@@ -100,7 +100,7 @@ sudo ecobz server-config \
 
 ## --minimal mode
 
-`--minimal` จะข้าม monitoring tools (glances, sysstat, htop, iotop, iftop, ncdu, mtr, lm-sensors) 
+`--minimal` จะข้าม monitoring tools (glances, sysstat, htop, iotop, iftop, ncdu, mtr, lm-sensors)
 เหลือแค่ security essentials + tools พื้นฐาน
 
 ```bash
